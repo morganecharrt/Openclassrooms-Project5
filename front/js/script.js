@@ -50,8 +50,6 @@ const createKanapCardInfo = kanap => {
   return $kanapCard
 }
 
-
-
 const main = async () => {
   const kanapsData = await dataKanaps() 
   
