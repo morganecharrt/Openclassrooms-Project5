@@ -15,7 +15,8 @@ function dataKanap() {
     });
 }
 
-// declare all elements
+// Déclaration de tous les éléments du panier
+const $itemContent = document.querySelector(".item__content");
 const $itemImg = document.querySelector(".item__img");
 const $itemTitle = document.getElementById("title");
 const $itemQuantity = document.getElementById("quantity");
@@ -23,8 +24,23 @@ const $itemColors = document.getElementById("colors");
 const $itemPrice = document.getElementById("price");
 const $itemDescription = document.getElementById("description");
 const $addToCart = document.getElementById("addToCart");
-const $confirmationAddToCart = document.querySelector(
+const $itemContentAddButton = document.querySelector(
   ".item__content__addButton"
+);
+
+// Ajout d'un bouton pour revenir au catalogue produit
+const $itemContentBackButton = document.createElement("button");
+$itemContentBackButton.classList.add("itemContentBackButton");
+$itemContentAddButton.appendChild($itemContentBackButton);
+$itemContentBackButton.textContent = "Revenir au catalogue";
+$itemContentBackButton.style = "background-color:gray;margin-right:10px";
+$itemContentAddButton.insertBefore(
+  $itemContentBackButton,
+  $itemContentAddButton.children[0]
+);
+$itemContentBackButton.setAttribute(
+  "onclick",
+  "window.location.href='./index.html'"
 );
 
 const fillKanapTable = (itemData) => {
@@ -45,10 +61,19 @@ const fillKanapOption = (itemData) => {
   });
 };
 
-//----Afficher texte confirmation Achat
+//----Afficher texte confirmation ajout panier
 
-const textConfirmationAchat = () => {
-  $confirmationAddToCart.textContent =
+const showConfirmationAchat = () => {
+  // Déclaration du message de confirmation d'ajout au panier
+  const $confirmationAddToCart = document.createElement("div");
+  $confirmationAddToCart.classList.add("confirmationAddToCart");
+  const $textConfirmationAddToCart = document.createElement("p");
+  $itemContent.appendChild($confirmationAddToCart);
+  $itemContent.insertBefore($confirmationAddToCart, $itemContent.children[3]);
+  $confirmationAddToCart.appendChild($textConfirmationAddToCart);
+  $textConfirmationAddToCart.style =
+    "color:white;background-color:green;padding:5px;margin-left:10px";
+  $textConfirmationAddToCart.textContent =
     "Votre produit a bien été ajouté au panier";
 };
 
@@ -110,7 +135,6 @@ function putOnLocalStorage() {
         productFromLocalStorage[i].quantity += optionsProduits.quantity;
         isPresent = true;
       }
-      textConfirmationAchat();
     }
 
     if (!isPresent) {
@@ -121,8 +145,8 @@ function putOnLocalStorage() {
   else {
     productFromLocalStorage = [];
     productFromLocalStorage.push(optionsProduits);
-    textConfirmationAchat();
   }
+  showConfirmationAchat();
   localStorage.setItem("produit", JSON.stringify(productFromLocalStorage));
 }
 
